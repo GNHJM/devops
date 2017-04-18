@@ -1,0 +1,8 @@
+---
+- name: install fail2ban
+  yum: name=fail2ban state=present enablerepo=epel
+
+- name: create local fail2ban config
+  src: jail.conf.j2
+  dest: /etc/fail2ban/jail.conf
+  

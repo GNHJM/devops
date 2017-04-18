@@ -1,0 +1,25 @@
+---
+- name: include the centos7 variables
+  include_vars: centos7.yml
+
+- name: config the timezone
+  command: 'timedatectl set-timezone Asia/Shanghai'
+
+- name: install ntpd
+  yum: name=ntpd state=lastest
+
+
+- include: epel.yml
+
+- include: fail2ban_centos7.yml
+  when: security_fail2ban_enabled
+
+- name: ensure fail2ban is auto-boot and running
+  service: name=fail2ban state=started enabled=yes
+  when: security_fail2ban_enabled
+
+- include: ssh.yml
+
+- include: auto_update.yml
+  when: security_autoupdate_enabled
+
